@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>XRP Ledger 日元稳定币演示</title>
+    <link rel="stylesheet" href="css/main.css" />
+  </head>
+  <body>
+    <div class="language-selector">
+      <button class="language-btn active" data-lang="zh">中文</button>
+      <button class="language-btn" data-lang="ja">日本語</button>
+      <button class="language-btn" data-lang="en">English</button>
+    </div>
+
+    <h1 id="main-title"></h1>
+
+    <div class="tabs">
+      <div class="tab active" id="tab-accounts" onclick="openTab(event, 'accounts')"></div>
+      <div class="tab" id="tab-tokens" onclick="openTab(event, 'tokens')"></div>
+      <div class="tab" id="tab-balance" onclick="openTab(event, 'balance')"></div>
+    </div>
+
+    <div id="accounts" class="tab-content active">
+      <div class="section">
+        <h2 id="my-accounts-title"><span id="accountCount"></span></h2>
+        <div class="form-group">
+          <div class="buttons-grid">
+            <div class="button-row">
+              <button id="generate-account-btn" onclick="generateAccounts(1)" class="grid-button"></button>
+              <button
+                id="refresh-all-balances-btn"
+                onclick="refreshAllBalances()"
+                class="btn-secondary grid-button"
+              ></button>
+            </div>
+            <div class="button-row">
+              <button id="export-accounts-btn" onclick="exportAccounts()" class="btn-secondary grid-button"></button>
+              <input type="file" id="importFile" class="hidden" accept=".json" onchange="importAccounts(this.files)" />
+              <button
+                id="import-accounts-btn"
+                onclick="document.getElementById('importFile').click()"
+                class="btn-secondary grid-button"
+              ></button>
+            </div>
+          </div>
+          <div id="generateResult" class="result"></div>
+        </div>
+
+        <div class="grid-container" id="addressCards">
+          <!-- 账户卡片将在这里动态生成 -->
+        </div>
+      </div>
+
+      <div class="section">
+        <h2 id="account-funding-title"></h2>
+        <div class="form-group">
+          <label id="testnet-funding-label"></label>
+          <select id="fundAddress" class="address-select">
+            <option value=""></option>
+          </select>
+          <div class="flex-container">
+            <button id="fund-testnet-account-btn" onclick="fundAccount()" class="flex-1"></button>
+          </div>
+          <div id="fundResult" class="result"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="tokens" class="tab-content">
+      <h2 id="token-issuance-title"></h2>
+
+      <!-- 步骤1：配置发行者账户 -->
+      <div class="section">
+        <h3 id="configure-issuer-label"></h3>
+        <div class="token-step-content">
+          <select id="issuerSecret" class="secret-select">
+            <option value=""></option>
+          </select>
+
+          <div class="account-flags-section">
+            <div class="params-group">
+              <label>Domain</label>
+              <input type="text" id="issuerDomain" placeholder="example.com" />
+
+              <label>Transfer Rate (0, 1000000000-2000000000)</label>
+              <div class="rate-input-container">
+                <input type="number" id="issuerTransferRate" placeholder="0" />
+                <span id="feePercentage" class="fee-percentage"></span>
+              </div>
+
+              <label>Tick Size (0-15)</label>
+              <input type="number" id="issuerTickSize" placeholder="0" min="0" max="15" />
+            </div>
+
+            <div class="flags-group">
+              <div class="tf-flags">
+                <h4>Transaction Flags (tf)</h4>
+                <div class="checkbox-group">
+                  <label><input type="checkbox" id="issuerSetRequireDestTag" /> SetRequireDestTag</label>
+                  <label><input type="checkbox" id="issuerSetRequireAuth" /> SetRequireAuth</label>
+                  <label><input type="checkbox" id="issuerSetDisallowXRP" /> SetDisallowXRP</label>
+                </div>
+              </div>
+
+              <div class="asf-flags">
+                <h4>Account Set Flags (asf)</h4>
+                <div class="radio-group">
+                  <label><input type="radio" name="issuerAsfFlag" value="none" checked /> None</label>
+                  <label><input type="radio" name="issuerAsfFlag" value="SetAsfRequireAuth" /> SetAsfRequireAuth</label>
+                  <label
+                    ><input type="radio" name="issuerAsfFlag" value="SetAsfDefaultRipple" /> SetAsfDefaultRipple</label
+                  >
+                  <label
+                    ><input type="radio" name="issuerAsfFlag" value="SetAsfAllowTrustLineClawback" />
+                    SetAsfAllowTrustLineClawback</label
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex-container">
+            <button id="configure-issuer-btn" onclick="configureIssuerAccount()" class="flex-1"></button>
+          </div>
+          <div id="issuerConfigResult" class="result"></div>
+        </div>
+      </div>
+
+      <!-- 步骤2：配置分发者账户 -->
+      <div class="section">
+        <h3 id="configure-distributor-label"></h3>
+        <div class="token-step-content">
+          <select id="distributorSecret" class="secret-select">
+            <option value=""></option>
+          </select>
+
+          <div class="account-flags-section">
+            <div class="params-group">
+              <label>Domain</label>
+              <input type="text" id="distributorDomain" placeholder="example.com" />
+            </div>
+
+            <div class="flags-group">
+              <div class="tf-flags">
+                <h4>Transaction Flags (tf)</h4>
+                <div class="checkbox-group">
+                  <label><input type="checkbox" id="distributorSetRequireDestTag" /> SetRequireDestTag</label>
+                  <label><input type="checkbox" id="distributorSetRequireAuth" /> SetRequireAuth</label>
+                  <label><input type="checkbox" id="distributorSetDisallowXRP" /> SetDisallowXRP</label>
+                </div>
+              </div>
+
+              <div class="asf-flags">
+                <h4>Account Set Flags (asf)</h4>
+                <div class="radio-group">
+                  <label><input type="radio" name="distributorAsfFlag" value="none" checked /> None</label>
+                  <label
+                    ><input type="radio" name="distributorAsfFlag" value="SetAsfRequireAuth" /> SetAsfRequireAuth</label
+                  >
+                  <label
+                    ><input type="radio" name="distributorAsfFlag" value="SetAsfDefaultRipple" />
+                    SetAsfDefaultRipple</label
+                  >
+                  <label
+                    ><input type="radio" name="distributorAsfFlag" value="SetAsfAllowTrustLineClawback" />
+                    SetAsfAllowTrustLineClawback</label
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex-container">
+            <button id="configure-distributor-btn" onclick="configureDistributorAccount()" class="flex-1"></button>
+          </div>
+          <div id="distributorConfigResult" class="result"></div>
+        </div>
+      </div>
+
+      <!-- 步骤3：创建信任线 -->
+      <div class="section">
+        <h3 id="create-trustline-label"></h3>
+        <div class="token-step-content">
+          <p id="trustline-note" class="note"></p>
+          <select id="trustlineReceiverSecret" class="secret-select" data-hint="trustline-receiver-hint">
+            <option value=""></option>
+          </select>
+          <select id="trustlineIssuerAddress" class="address-select" data-hint="trustline-issuer-hint">
+            <option value=""></option>
+          </select>
+          <input id="trustlineTokenName" placeholder="" data-hint="token-name-hint" />
+          <input id="trustlineAmount" placeholder="" data-hint="trust-limit-hint" />
+          <div class="flex-container">
+            <button id="create-trustline-btn" onclick="createTrustLine()" class="flex-1"></button>
+          </div>
+          <div id="trustlineResult" class="result"></div>
+        </div>
+      </div>
+
+      <!-- 步骤4：转移代币 -->
+      <div class="section">
+        <h3 id="transfer-token-label"></h3>
+        <div class="token-step-content">
+          <select id="senderSecret" class="secret-select" data-hint="token-sender-hint">
+            <option value=""></option>
+          </select>
+          <select id="receiverAddress" class="address-select" data-hint="token-receiver-hint">
+            <option value=""></option>
+          </select>
+          <select id="issuerAddress" class="address-select" data-hint="token-issuer-hint">
+            <option value=""></option>
+          </select>
+          <input id="tokenName" placeholder="" data-hint="token-name-hint" />
+          <input id="issueAmount" placeholder="" data-hint="issue-amount-hint" />
+
+          <div class="input-hint" id="transfer-rate-hint">Transfer Rate (0, 1000000000-2000000000)</div>
+          <div class="rate-input-container">
+            <input type="number" id="transferRate" placeholder="0" min="0" />
+            <span id="transferFeePercentage" class="fee-percentage"></span>
+          </div>
+
+          <div class="input-hint">
+            <span id="estimated-fee-hint">预估手续费</span>: <span id="transferFee">0</span>
+            <span class="token-name"></span>
+          </div>
+          <div class="flex-container">
+            <button id="transfer-token-btn" onclick="transferToken('transfer')" class="flex-1"></button>
+          </div>
+          <div id="issueResult" class="result"></div>
+        </div>
+      </div>
+
+      <!-- 步骤5：冻结信任线 -->
+      <div class="section">
+        <h3 id="freeze-trustline-label"></h3>
+        <div class="token-step-content">
+          <p id="freeze-trustline-note" class="note"></p>
+          <select id="freezeAccountSecret" class="secret-select" data-hint="freeze-account-hint">
+            <option value=""></option>
+          </select>
+          <select id="freezeTrustlineAddress" class="address-select" data-hint="freeze-issuer-hint">
+            <option value=""></option>
+          </select>
+          <input id="freezeTokenName" placeholder="" data-hint="token-name-hint" />
+          <div class="flex-container">
+            <button id="freeze-trustline-btn" onclick="freezeTrustLine()" class="flex-1"></button>
+          </div>
+          <div id="freezeResult" class="result"></div>
+        </div>
+      </div>
+
+      <!-- 步骤6：解冻信任线 -->
+      <div class="section">
+        <h3 id="unfreeze-trustline-label"></h3>
+        <div class="token-step-content">
+          <p id="unfreeze-trustline-note" class="note"></p>
+          <select id="unfreezeAccountSecret" class="secret-select" data-hint="unfreeze-account-hint">
+            <option value=""></option>
+          </select>
+          <select id="unfreezeTrustlineAddress" class="address-select" data-hint="unfreeze-issuer-hint">
+            <option value=""></option>
+          </select>
+          <input id="unfreezeTokenName" placeholder="" data-hint="token-name-hint" />
+          <div class="flex-container">
+            <button id="unfreeze-trustline-btn" onclick="unfreezeTrustLine()" class="flex-1"></button>
+          </div>
+          <div id="unfreezeResult" class="result"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="balance" class="tab-content">
+      <div class="section">
+        <h2 id="balance-inquiry-title"></h2>
+        <div class="form-group">
+          <label id="xrp-balance-query-label"></label>
+          <select id="balanceAddress" class="address-select">
+            <option value=""></option>
+          </select>
+          <div class="flex-container">
+            <button id="query-xrp-btn" onclick="getBalance()" class="flex-1"></button>
+          </div>
+          <div id="balanceResult" class="result"></div>
+        </div>
+
+        <div class="form-group">
+          <label id="token-list-query-label"></label>
+          <select id="tokensAddress" class="address-select">
+            <option value=""></option>
+          </select>
+          <div class="flex-container">
+            <button id="query-tokens-btn" onclick="getTokens()" class="flex-1"></button>
+          </div>
+          <div id="tokensResult" class="result"></div>
+        </div>
+
+        <div class="form-group">
+          <label id="trustlines-query-label"></label>
+          <select id="trustlinesAddress" class="address-select">
+            <option value=""></option>
+          </select>
+          <div class="flex-container">
+            <button id="query-trustlines-btn" onclick="getTrustlines()" class="flex-1"></button>
+          </div>
+          <div id="trustlinesResult" class="result"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 引入外部JavaScript文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/bignumber.js@9.1.2/bignumber.min.js"></script>
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>

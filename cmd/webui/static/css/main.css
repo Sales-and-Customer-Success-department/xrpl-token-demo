@@ -1,0 +1,636 @@
+body {
+  font-family: Arial, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+/* 代币发行步骤样式 */
+#tokens .section {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+/* 实用工具类 */
+.margin-left-10 {
+  margin-left: 10px;
+}
+
+.hidden {
+  display: none;
+}
+
+.flex-container {
+  display: flex;
+  gap: 10px;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+/* 按钮网格布局 */
+.buttons-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.button-row {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.grid-button {
+  flex: 1;
+  text-align: center;
+}
+
+#tokens .section h3 {
+  color: #25a768;
+  margin-top: 0;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+  font-size: 1.2em;
+}
+
+.token-step-content {
+  padding: 0;
+}
+
+/* 语言选择器样式 */
+.language-selector {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 5px;
+}
+.language-btn {
+  background-color: #f1f1f1;
+  color: #333;
+  border: 1px solid #ddd;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 3px;
+  font-size: 0.8em;
+  transition: all 0.2s;
+}
+.language-btn:hover {
+  background-color: #e3e3e3;
+}
+.language-btn.active {
+  background-color: #25a768;
+  color: white;
+  border-color: #25a768;
+}
+h1 {
+  color: #25a768;
+  text-align: center;
+  margin-bottom: 30px;
+}
+.section {
+  margin-bottom: 25px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+.section h2 {
+  color: #333;
+  margin-top: 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+.form-group {
+  margin-bottom: 15px;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #555;
+}
+button {
+  background-color: #25a768;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+button:hover {
+  background-color: #1d8a54;
+}
+button:disabled {
+  background-color: #a0a0a0;
+  cursor: not-allowed;
+}
+input,
+select {
+  padding: 10px;
+  margin: 5px 0;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+.result {
+  background-color: #f5f5f5;
+  padding: 15px;
+  margin-top: 15px;
+  border-radius: 5px;
+  white-space: pre-wrap;
+  min-height: 20px;
+}
+.loading {
+  color: #888;
+  font-style: italic;
+}
+.error {
+  color: #d9534f;
+}
+.success {
+  color: #5cb85c;
+}
+
+/* 交易链接样式 */
+.tx-link {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 8px;
+  background-color: #25a768;
+  color: white;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 0.85em;
+  transition: background-color 0.2s;
+}
+
+.tx-link:hover {
+  background-color: #1d8a54;
+  text-decoration: none;
+}
+
+.tx-link:active,
+.tx-link:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(37, 167, 104, 0.3);
+}
+
+.tabs {
+  display: flex;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ddd;
+}
+.tab {
+  padding: 10px 20px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-bottom: none;
+}
+.tab.active {
+  background-color: white;
+  border-color: #ddd;
+  border-bottom-color: white;
+  border-radius: 5px 5px 0 0;
+  margin-bottom: -1px;
+  font-weight: bold;
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+}
+.address-card {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 15px;
+  background-color: #f9f9f9;
+  position: relative;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.address-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.address-card h3 {
+  margin-top: 0;
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 10px;
+}
+.address-card .address-info {
+  margin-bottom: 10px;
+}
+.address-card .balance-info {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+}
+.address-actions {
+  margin-top: 10px;
+}
+.address-actions .flex-container {
+  width: 100%;
+}
+.address-actions button {
+  padding: 8px 12px;
+  font-size: 0.9em;
+}
+.address-card .delete-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease-in-out;
+  opacity: 0.6;
+}
+.address-card:hover .delete-btn {
+  opacity: 1;
+}
+.delete-btn:hover {
+  background-color: #e74c3c;
+  transform: scale(1.1);
+  transition: all 0.2s;
+}
+.delete-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.5);
+}
+.btn-secondary {
+  background-color: #6c757d;
+}
+.btn-secondary:hover {
+  background-color: #5a6268;
+}
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 20px;
+}
+.copy-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 20px;
+  background-color: transparent;
+  border: none;
+  border-radius: 3px;
+  color: #888;
+  cursor: pointer;
+  font-size: 12px;
+  margin-left: 5px;
+  transition: all 0.2s;
+  vertical-align: middle;
+  padding: 0;
+  position: relative;
+}
+.copy-btn:hover {
+  color: #25a768;
+  background-color: rgba(37, 167, 104, 0.1);
+  transform: scale(1.05);
+}
+.copy-btn:active {
+  transform: scale(0.95);
+}
+@keyframes success-pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.copy-btn.copy-success {
+  background-color: rgba(37, 167, 104, 0.2);
+  color: #25a768;
+  animation: success-pulse 0.3s ease-in-out;
+}
+
+.address-card .address-info p,
+.address-card .balance-info p {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 8px 0;
+  position: relative;
+}
+
+.address-card .address-info p strong,
+.address-card .balance-info p strong {
+  margin-right: 5px;
+  min-width: 70px;
+  display: inline-block;
+}
+
+.address-card .address-info p span,
+.address-card .balance-info p span {
+  font-family: monospace;
+  background-color: #f5f5f5;
+  padding: 3px 6px;
+  border-radius: 3px;
+  font-size: 0.9em;
+  cursor: default;
+  position: relative;
+  margin-right: 5px;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: calc(100% - 35px);
+}
+
+.code-text {
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.5px;
+  color: #333;
+  position: relative;
+  transition: all 0.2s;
+}
+
+.code-text:hover {
+  color: #000;
+  background-color: #eaf9f2;
+}
+
+.copy-tooltip {
+  position: absolute;
+  background-color: rgba(37, 167, 104, 0.9);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 10px;
+  white-space: nowrap;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: fadeIn 0.3s;
+  pointer-events: none;
+  z-index: 10;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* 标志选项样式改进 */
+.checkbox-group label,
+.radio-group label {
+  padding: 6px 10px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.checkbox-group label:hover,
+.radio-group label:hover {
+  background-color: rgba(37, 167, 104, 0.1);
+}
+
+.checkbox-group input[type='checkbox'],
+.radio-group input[type='radio'] {
+  margin-right: 10px;
+}
+
+/* 输入字段标签 */
+.params-group label {
+  margin-top: 12px;
+  color: #444;
+  font-weight: 500;
+}
+
+/* 响应式样式 */
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+  }
+
+  .copy-btn {
+    width: 28px;
+    height: 28px;
+  }
+
+  .copy-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .address-card .address-info p,
+  .address-card .balance-info p {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .address-card .address-info p span,
+  .address-card .balance-info p span {
+    margin-bottom: 5px;
+    width: 100%;
+  }
+
+  /* 移动设备上按钮网格变为垂直排列 */
+  .button-row {
+    flex-direction: column;
+  }
+}
+
+/* 提示文本样式 */
+.note {
+  color: #666;
+  font-size: 0.9em;
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  background-color: #f7f9fa;
+  border-left: 3px solid #25a768;
+  border-radius: 0 3px 3px 0;
+}
+
+/* 选择框提示样式 */
+.select-hint {
+  display: block;
+  font-size: 0.8em;
+  color: #666;
+  margin-top: 2px;
+  margin-bottom: 8px;
+  padding-left: 2px;
+}
+
+/* 输入框提示样式 */
+.input-hint {
+  display: block;
+  font-size: 0.8em;
+  color: #666;
+  margin-bottom: 2px;
+  padding-left: 2px;
+}
+
+select + .select-hint {
+  margin-top: -3px;
+}
+
+/* 添加输入框焦点样式 */
+input:focus {
+  outline: none;
+  border-color: #25a768;
+  box-shadow: 0 0 0 2px rgba(37, 167, 104, 0.2);
+}
+
+/* 账户标志选项样式 */
+.account-flags-section {
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 5px;
+  padding: 15px;
+  margin: 10px 0 15px 0;
+  display: block; /* 确保高级选项始终显示 */
+}
+
+.params-group {
+  margin-bottom: 15px;
+}
+
+.params-group label {
+  display: block;
+  font-size: 0.9em;
+  color: #555;
+  margin: 8px 0 3px 0;
+}
+
+.flags-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.tf-flags,
+.asf-flags {
+  flex: 1;
+  min-width: 300px;
+}
+
+.flags-group h4 {
+  font-size: 0.95em;
+  color: #333;
+  margin: 0 0 8px 0;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #eee;
+}
+
+.checkbox-group,
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.checkbox-group label,
+.radio-group label {
+  display: flex;
+  align-items: center;
+  font-size: 0.9em;
+  color: #555;
+  cursor: pointer;
+}
+
+.checkbox-group input[type='checkbox'],
+.radio-group input[type='radio'] {
+  width: auto;
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .flags-group {
+    flex-direction: column;
+    gap: 15px;
+  }
+}
+
+/* Transfer Rate Fee Percentage styles */
+.rate-input-container {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.fee-percentage {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #0070BF;
+  font-weight: bold;
+  padding: 2px 5px;
+  border-radius: 3px;
+  background-color: rgba(0, 112, 191, 0.1);
+  font-size: 14px;
+}
+
+/* When the fee is high (>= 50%), highlight in different color */
+.fee-percentage.high-fee {
+  color: #e74c3c;
+  background-color: rgba(231, 76, 60, 0.1);
+}
+
+.disabled-label {
+  color: #999;
+  font-style: italic;
+}
+
+input[disabled] {
+  background-color: #f5f5f5;
+  color: #999;
+  cursor: not-allowed;
+}
+
+.fee-display {
+  padding: 8px;
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.token-name {
+  color: #0070BF;
+  margin-left: 4px;
+}
